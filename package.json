@@ -1,7 +1,7 @@
 {
-  "name": "nocms-events",
+  "name": "nocms-ajax",
   "version": "0.0.1",
-  "description": "Global events for NoCMS",
+  "description": "Ajax functions for NoCMS",
   "main": "dist/scripts.js",
   "scripts": {
     "test": "node test/",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/nocms/nocms-events.git"
+    "url": "git+ssh://git@bitbucket.org/nocms/nocms-ajax.git"
   },
   "devDependencies": {
     "babel-cli": "^6.10.1",
@@ -24,9 +24,9 @@
     "uglify-js": "^2.6.4"
   },
   "keywords": [
-    "events"
+    "ajax", "nocms"
   ],
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/nocms/nocms-events#readme"
+  "homepage": "https://bitbucket.org/nocms/nocms-ajax#readme"
 }
