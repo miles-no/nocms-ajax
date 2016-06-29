@@ -1,11 +1,11 @@
-# NoCMS Events
+# NoCMS Ajax
 
 Ajax functions for NoCMS
 
 
 ## Installation
 
-Install nocms-events from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
+Install nocms-ajax from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
 ```
 npm install nocms-ajax --save

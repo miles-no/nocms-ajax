@@ -2,7 +2,7 @@
   "name": "nocms-ajax",
   "version": "0.0.1",
   "description": "Ajax functions for NoCMS",
-  "main": "dist/scripts.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "node test/",
     "prepublish": "babel ./src --out-dir ./lib --source-maps --presets es2015,stage-2 && browserify ./lib/index.js -o ./build/nocms-ajax.js --standalone NoCMSAjax && uglifyjs ./build/nocms-ajax.js --compress --mangle --output ./build/nocms-ajax.min.js --source-map ./build/nocms-ajax.min.js.map"
