@@ -46,10 +46,10 @@ var makeRequest = function makeRequest(url, method, data, opts, callback) {
 };
 
 module.exports = {
-  post: function post(url, data, options, callback) {
+  post: function post(url, data, options, cb) {
     makeRequest(url, 'POST', data, options, cb);
   },
-  get: function get(url, options, callback) {
+  get: function get(url, options, cb) {
     makeRequest(url, 'GET', null, options, cb);
   }
 };
