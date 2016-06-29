@@ -46,23 +46,13 @@ var makeRequest = function makeRequest(url, method, data, opts, callback) {
 };
 
 module.exports = {
-  post: function post(url, data, opts, callback) {
+  post: function post(url, data, options, callback) {
     makeRequest(url, 'POST', data, options, cb);
   },
-  get: function get(url, opts, callback) {
+  get: function get(url, options, callback) {
     makeRequest(url, 'GET', null, options, cb);
   }
 };
 
-},{}],2:[function(require,module,exports){
-'use strict';
-
-var ajax = require('./ajax');
-
-module.exports = {
-  get: ajax.get,
-  post: ajax.post
-};
-
-},{"./ajax":1}]},{},[2])(2)
+},{}]},{},[1])(1)
 });
