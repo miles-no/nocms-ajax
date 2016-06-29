@@ -1,10 +1,13 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.NoCMSAjax = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var makeRequest = function makeRequest(url, method, data) {
-  var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
-  var cb = arguments[4];
-
+var makeRequest = function makeRequest(url, method, data, opts, callback) {
+  var options = opts;
+  var cb = callback;
+  if (typeof opts === 'function') {
+    cb = opts;
+    options = {};
+  }
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.onload = function (e) {
@@ -44,21 +47,9 @@ var makeRequest = function makeRequest(url, method, data) {
 
 module.exports = {
   post: function post(url, data, opts, callback) {
-    var options = opts;
-    var cb = callback;
-    if (typeof opts === 'function') {
-      cb = opts;
-      options = null;
-    }
     makeRequest(url, 'POST', data, options, cb);
   },
   get: function get(url, opts, callback) {
-    var options = opts;
-    var cb = callback;
-    if (typeof opts === 'function') {
-      cb = opts;
-      options = {};
-    }
     makeRequest(url, 'GET', null, options, cb);
   }
 };
@@ -68,26 +59,9 @@ module.exports = {
 
 var ajax = require('./ajax');
 
-var sendMessage = function sendMessage(messageType, messageData, o, callback) {
-  var options = o;
-  var cb = callback;
-  var messageObj = {
-    messageType: messageType,
-    data: messageData
-  };
-
-  if (typeof options === 'function') {
-    cb = options;
-    options = {};
-  }
-
-  ajax.post('/api/message', messageObj, options, cb);
-};
-
 module.exports = {
   get: ajax.get,
-  post: ajax.post,
-  sendMessage: sendMessage
+  post: ajax.post
 };
 
 },{"./ajax":1}]},{},[2])(2)
