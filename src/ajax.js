@@ -1,4 +1,10 @@
-const makeRequest = (url, method, data, options = {}, cb) => {
+const makeRequest = (url, method, data, opts, callback) => {
+  let options = opts;
+  let cb = callback;
+  if (typeof opts === 'function') {
+    cb = opts;
+    options = {};
+  }
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.onload = (e) => {
@@ -38,21 +44,9 @@ const makeRequest = (url, method, data, options = {}, cb) => {
 
 module.exports = {
   post(url, data, opts, callback) {
-    let options = opts;
-    let cb = callback;
-    if (typeof opts === 'function') {
-      cb = opts;
-      options = null;
-    }
     makeRequest(url, 'POST', data, options, cb);
   },
   get(url, opts, callback) {
-    let options = opts;
-    let cb = callback;
-    if (typeof opts === 'function') {
-      cb = opts;
-      options = {};
-    }
     makeRequest(url, 'GET', null, options, cb);
   },
 };
