@@ -43,10 +43,10 @@ const makeRequest = (url, method, data, opts, callback) => {
 };
 
 module.exports = {
-  post(url, data, options, callback) {
+  post(url, data, options, cb) {
     makeRequest(url, 'POST', data, options, cb);
   },
-  get(url, options, callback) {
+  get(url, options, cb) {
     makeRequest(url, 'GET', null, options, cb);
   },
 };
