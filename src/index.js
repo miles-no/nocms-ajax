@@ -40,12 +40,12 @@ const makeRequest = (url, method, data, opts, callback) => {
   }
   xhr.setRequestHeader('Content-type', 'application/json');
 
-  const userToken = document.cookie.replace(/(^|;)\\s*user-authenticated\\s*=\\s*([^;]+)/, '$1');
+  const userToken = document.cookie.replace(/(?:(?:^|.*;\s*)user-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1')
   if(userToken){
     xhr.setRequestHeader('Authorization', 'Bearer ' + authorizationToken);
   }
 
-  const authorizationToken = document.cookie.replace(/(^|;)\\s*nocms-authenticated\\s*=\\s*([^;]+)/, '$1');
+  const authorizationToken = document.cookie.replace(/(?:(?:^|.*;\s*)nocms-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1');
   if(authorizationToken){
     xhr.setRequestHeader('X-Authorization', 'Bearer ' + authorizationToken);
   }

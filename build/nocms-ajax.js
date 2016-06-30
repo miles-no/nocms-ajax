@@ -43,12 +43,12 @@ var makeRequest = function makeRequest(url, method, data, opts, callback) {
   }
   xhr.setRequestHeader('Content-type', 'application/json');
 
-  var userToken = document.cookie.replace(/(^|;)\\s*user-authenticated\\s*=\\s*([^;]+)/, '$1');
+  var userToken = document.cookie.replace(/(?:(?:^|.*;\s*)user-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1');
   if (userToken) {
     xhr.setRequestHeader('Authorization', 'Bearer ' + authorizationToken);
   }
 
-  var authorizationToken = document.cookie.replace(/(^|;)\\s*nocms-authenticated\\s*=\\s*([^;]+)/, '$1');
+  var authorizationToken = document.cookie.replace(/(?:(?:^|.*;\s*)nocms-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1');
   if (authorizationToken) {
     xhr.setRequestHeader('X-Authorization', 'Bearer ' + authorizationToken);
   }
