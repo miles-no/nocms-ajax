@@ -19,7 +19,9 @@
     "eslint": "^3.12.2",
     "eslint-config-webteam": "git+https://github.com/miles-no/eslint-config-webteam.git",
     "eslint-plugin-import": "^2.2.0",
-    "semantic-release": "^6.3.6"
+    "semantic-release": "^6.3.6",
+    "sinon": "^3.0.0",
+    "tape": "^4.8.0"
   },
   "keywords": [
     "ajax",
