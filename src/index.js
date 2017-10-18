@@ -7,7 +7,7 @@ const makeRequest = (url, method, data, opts, callback) => {
   }
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
-  xhr.onload = (e) => {
+  xhr.onload = () => {
     if (xhr.readyState === 4) {
       if (!cb) {
         return;
@@ -25,7 +25,7 @@ const makeRequest = (url, method, data, opts, callback) => {
     }
   };
 
-  xhr.onerror = (e) => {
+  xhr.onerror = () => {
     cb({ status: xhr.status, error: xhr.statusText }, null);
   };
 
@@ -40,14 +40,15 @@ const makeRequest = (url, method, data, opts, callback) => {
   }
   xhr.setRequestHeader('Content-type', 'application/json');
 
-  const userToken = document.cookie.replace(/(?:(?:^|.*;\s*)user-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1')
-  if(userToken){
-    xhr.setRequestHeader('Authorization', 'Bearer ' + authorizationToken);
+  const authorizationToken = document.cookie.replace(/(?:(?:^|.*;\s*)nocms-authenticated\s*=\s*([^;]*).*$)|^.*$/, '$1');
+
+  const userToken = document.cookie.replace(/(?:(?:^|.*;\s*)user-authenticated\s*=\s*([^;]*).*$)|^.*$/, '$1');
+  if (userToken) {
+    xhr.setRequestHeader('Authorization', `Bearer ${authorizationToken}`);
   }
 
-  const authorizationToken = document.cookie.replace(/(?:(?:^|.*;\s*)nocms-authenticated\s*\=\s*([^;]*).*$)|^.*$/, '$1');
-  if(authorizationToken){
-    xhr.setRequestHeader('X-Authorization', 'Bearer ' + authorizationToken);
+  if (authorizationToken) {
+    xhr.setRequestHeader('X-Authorization', `Bearer ${authorizationToken}`);
   }
 
   xhr.send(JSON.stringify(data));
