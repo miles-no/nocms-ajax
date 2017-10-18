@@ -21,7 +21,7 @@
     "eslint-config-webteam": "^2.0.0",
     "eslint-plugin-import": "^2.2.0",
     "semantic-release": "^6.3.6",
-    "sinon": "^3.0.0",
+    "sinon": "^4.0.1",
     "tape": "^4.8.0"
   },
   "keywords": [
