@@ -61,4 +61,7 @@ module.exports = {
   get(url, options, cb) {
     makeRequest(url, 'GET', null, options, cb);
   },
+  delete(url, options, cb) {
+    makeRequest(url, 'DELETE', null, options, cb);
+  },
 };
