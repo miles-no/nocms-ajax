@@ -32,7 +32,6 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/nocms/nocms-ajax#readme",
   "release": {
-    "verifyConditions": "condition-circle",
-    "debug": false
+    "verifyConditions": "condition-circle"
   }
 }
