@@ -3,6 +3,6 @@ machine:
     version: v8.4.0
 test:
   override:
-    - echo "JØRGEN take a look at the test, doesn´t run"
+    - npm test
   post:
-    - npm run semantic-release || true
+    - DEBUG=condition npm run semantic-release || true
