@@ -92,7 +92,6 @@ test('applied response function', (t) => {
   });
 
   ajaxApi.applyOnResponse((req, err, res, next) => {
-    console.log('---------------------------------', req);
     t.pass();
     next();
   });
