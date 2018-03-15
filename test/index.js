@@ -121,7 +121,7 @@ test('clear response functions', (t) => {
   });
 });
 
-test('multiple applied response function', (t) => {
+test('multiple applied response functions', (t) => {
   ajaxApi.clearResponseFunctions();
 
   t.plan(3);
@@ -145,24 +145,21 @@ test('multiple applied response function', (t) => {
   });
 });
 
-test.skip('multiple applied response function', (t) => {
-  t.plan(3);
-  const uri = '/applied-on-response-multi';
+test('applied function interruption', (t) => {
+  ajaxApi.clearResponseFunctions();
+  t.plan(1);
+  const uri = '/applied-on-response-interruption';
   mock.get(uri, {
     body: '{ "status": "ok" }',
     status: 200,
   });
 
   ajaxApi.applyOnResponse((err, res, next) => {
-    t.pass('fn 1 called');
-    next();
-  });
-  ajaxApi.applyOnResponse((err, res, next) => {
-    t.pass('fn 2 called');
-    next();
+    t.pass('applied function called');
+    next({ interrupt: true });
   });
 
   ajaxApi.get(uri, () => {
-    t.pass('callback called');
+    t.fail('interrupted callback called');
   });
 });

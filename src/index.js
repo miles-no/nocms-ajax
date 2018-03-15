@@ -4,15 +4,20 @@ let hasResponseFunctions = false;
 
 const respond = (err, res, cb) => {
   let i = 0;
-  let fn = responseFunctions[i];
-  const next = () => {
-    i += 1;
-    fn = responseFunctions[i];
+  const l = responseFunctions.length;
+  let interrupted = false;
+  const next = (result = {}) => {
+    if (result.interrupt) {
+      interrupted = true;
+    }
   };
-  while (fn) {
-    fn(err, res, next);
+  while (i < l) {
+    responseFunctions[i](err, res, next);
+    i += 1;
   }
-  cb(err, res);
+  if (!interrupted) {
+    cb(err, res);
+  }
 };
 
 const makeRequest = (url, method, data, opts, callback) => {
