@@ -59,6 +59,30 @@ test('secure option should set pragma header', (t) => {
   });
 });
 
+test('put requests', (t) => {
+  t.plan(1);
+  const uri = '/message-put';
+  mock.put(uri, (req, res) => {
+    return res.status(200).body('{ "status": "ok" }');
+  });
+
+  ajaxApi.put(uri, { foo: 1 }, (err, res) => {
+    t.deepEqual(res, { status: 'ok' });
+  });
+});
+
+test('delete requests', (t) => {
+  t.plan(1);
+  const uri = '/message-put';
+  mock.delete(uri, (req, res) => {
+    return res.status(200).body('{ "status": "ok" }');
+  });
+
+  ajaxApi.delete(uri, (err, res) => {
+    t.deepEqual(res, { status: 'ok' });
+  });
+});
+
 // test('get requests return an object', (t) => {
 //   server.respondWith('GET', '/test', [
 //     200, { 'Content-Type': 'application/json' }, JSON.stringify({ foo: 1 }),

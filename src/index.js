@@ -47,7 +47,7 @@ const makeRequest = (url, method, data, opts, callback) => {
           const response = JSON.parse(xhr.responseText);
           cb(null, response);
         } catch (error) {
-          cb({ status: -1, error: 'Invalid JSON. Did you specify accet header?' });
+          cb({ status: -1, error: 'Invalid JSON. Did you specify accept header?' });
         }
       } else {
         cb({ status: xhr.status || -1, error: xhr.statusText || 'Network error' }, null);
@@ -59,11 +59,17 @@ const makeRequest = (url, method, data, opts, callback) => {
 };
 
 module.exports = {
+  get(url, options, cb) {
+    makeRequest(url, 'GET', null, options, cb);
+  },
   post(url, data, options, cb) {
     makeRequest(url, 'POST', data, options, cb);
   },
-  get(url, options, cb) {
-    makeRequest(url, 'GET', null, options, cb);
+  put(url, data, options, cb) {
+    makeRequest(url, 'PUT', data, options, cb);
+  },
+  delete(url, options, cb) {
+    makeRequest(url, 'DELETE', null, options, cb);
   },
   delete(url, options, cb) {
     makeRequest(url, 'DELETE', null, options, cb);
