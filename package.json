@@ -21,8 +21,8 @@
     "eslint-config-webteam": "^2.0.0",
     "eslint-plugin-import": "^2.2.0",
     "semantic-release": "^8.2.0",
-    "sinon": "^4.0.1",
-    "tape": "^4.8.0"
+    "tape": "^4.8.0",
+    "xhr-mock": "^2.2.0"
   },
   "keywords": [
     "ajax",

@@ -5,29 +5,10 @@ const makeRequest = (url, method, data, opts, callback) => {
     cb = opts;
     options = {};
   }
+  options.accept = opts.accept || 'application/json';
+
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
-  xhr.onload = () => {
-    if (xhr.readyState === 4) {
-      if (!cb) {
-        return;
-      }
-      if (xhr.status !== 200) {
-        cb({ status: xhr.status, error: xhr.statusText }, null);
-        return;
-      }
-      if (options.contentType === 'text/html') {
-        cb(null, xhr.responseText);
-        return;
-      }
-      const response = JSON.parse(xhr.responseText);
-      cb(null, response);
-    }
-  };
-
-  xhr.onerror = () => {
-    cb({ status: xhr.status, error: xhr.statusText }, null);
-  };
 
   if (options.responseRequired) {
     xhr.setRequestHeader('Pragma', 'response-expected');
@@ -50,6 +31,29 @@ const makeRequest = (url, method, data, opts, callback) => {
   if (authorizationToken) {
     xhr.setRequestHeader('X-Authorization', `Bearer ${authorizationToken}`);
   }
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (!cb) {
+        return;
+      }
+      if (xhr.status >= 200 && xhr.status < 300) {
+        if (options.accept !== 'application/json') {
+          cb(null, xhr.responseText);
+          return;
+        }
+
+        try {
+          const response = JSON.parse(xhr.responseText);
+          cb(null, response);
+        } catch (error) {
+          cb({ status: -1, error: 'Invalid JSON. Did you specify accet header?' });
+        }
+      } else {
+        cb({ status: xhr.status || -1, error: xhr.statusText || 'Network error' }, null);
+      }
+    }
+  };
 
   xhr.send(JSON.stringify(data));
 };
