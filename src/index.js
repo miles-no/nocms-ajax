@@ -1,4 +1,3 @@
-
 let responseFunctions = [];
 let hasResponseFunctions = false;
 
