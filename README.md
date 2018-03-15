@@ -34,12 +34,35 @@ Sends a get request and parse a JSON response. See options for other content typ
 ### post, (url, data, options, callback)
 Sends a post request with a JSON body
 
-### sendMessage, (messageType, messageData, options, callback)
-Sends a message to the message api.
+### put, (url, data, options, callback)
+Sends a put request with a JSON body
+
+### delete, (url,  options, callback)
+Sends a delete request with a JSON body
+
+### Response function
+Response functions can be applied to every request, acting as a middleware prior to the callback functions.
+
+#### applyOnResponse, (fn)
+If you need to interrupt responses, e.g. if you want to reauthenticate upon 401 responses, you could apply a response function.
+
+```js
+import ajax from 'nocms-ajax';
+ajax.applyOnResponse((err, res, next) => {
+  if (err.status === 401) {
+    window.location = '/login';
+    next({ interrupt: true });
+  } else {
+    next();
+  }
+});
+```
+
+#### clearResponseFunctions
+Removes all registered response functions.
 
 ### options object
 The following options are supported:
-`accept` sets the accept header of the request.
-`contentType` can be set to `text/html`. Default is `application/json` which is parsed.
-`responseRequired` is used for message api requests through `sendMessage` when a response on the message is required.
+`accept` sets the accept header of the request. Default: `application/json`, and thus the response is parsed.
+`responseRequired` is used for message api requests when a response on the message is required.
 `secure` is used for the message api to prevent logging of sensitive information.
