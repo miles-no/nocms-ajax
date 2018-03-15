@@ -4,10 +4,11 @@
   "description": "Ajax functions for NoCMS",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node test/",
+    "test": "npm run prepare && npm run build-test && node bin/",
     "prepare": "babel ./src --out-dir ./lib --source-maps --presets env",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "build-test": "babel ./test --out-dir ./bin --presets env"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/nocms/nocms-ajax#readme",
+  "homepage": "https://github.com/miles-no/nocms-ajax",
   "release": {
     "verifyConditions": "condition-circle"
   }
