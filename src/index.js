@@ -1,3 +1,20 @@
+
+let responseFunctions = [];
+let hasResponseFunctions = false;
+
+const respond = (err, res, cb) => {
+  let i = 0;
+  let fn = responseFunctions[i];
+  const next = () => {
+    i += 1;
+    fn = responseFunctions[i];
+  };
+  while (fn) {
+    fn(err, res, next);
+  }
+  cb(err, res);
+};
+
 const makeRequest = (url, method, data, opts, callback) => {
   let options = opts;
   let cb = callback;
@@ -34,31 +51,39 @@ const makeRequest = (url, method, data, opts, callback) => {
 
   xhr.onreadystatechange = () => {
     if (xhr.readyState === XMLHttpRequest.DONE) {
+      let response;
+      let error;
+      let status = -1;
       if (!cb) {
         return;
       }
       if (xhr.status >= 200 && xhr.status < 300) {
         if (options.accept !== 'application/json') {
-          cb(null, xhr.responseText);
-          return;
+          response = xhr.responseText;
         }
-
-        try {
-          const response = JSON.parse(xhr.responseText);
-          cb(null, response);
-        } catch (error) {
-          cb({ status: -1, error: 'Invalid JSON. Did you specify accept header?' });
+        if (options.accept === 'application/json') {
+          try {
+            response = JSON.parse(xhr.responseText);
+          } catch (ex) {
+            error = 'Invalid JSON. Did you specify accept header?';
+          }
         }
       } else {
-        cb({ status: xhr.status || -1, error: xhr.statusText || 'Network error' }, null);
+        status = xhr.status || -1;
+        error = xhr.statusText || 'Network error';
       }
+      if (hasResponseFunctions) {
+        respond(error ? { error, status }  : null, response, cb);
+        return;
+      }
+      cb(error, response);
     }
   };
 
   xhr.send(JSON.stringify(data));
 };
 
-module.exports = {
+const api = {
   get(url, options, cb) {
     makeRequest(url, 'GET', null, options, cb);
   },
@@ -74,4 +99,14 @@ module.exports = {
   delete(url, options, cb) {
     makeRequest(url, 'DELETE', null, options, cb);
   },
+  applyOnResponse(fn) {
+    hasResponseFunctions = true;
+    responseFunctions.push(fn);
+  },
+  clearResponseFunctions() {
+    hasResponseFunctions = false;
+    responseFunctions = [];
+  },
 };
+
+export default api;

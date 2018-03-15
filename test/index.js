@@ -1,9 +1,9 @@
-const test = require('tape');
-const mock = require('xhr-mock').default;
-const ajaxApi = require('../lib');
+import test from 'tape';
+import mock from 'xhr-mock';
+import ajaxApi from '../lib';
 
 mock.setup();
- 
+
 global.document = { cookie: '' };
 
 test('get requests should return json by default', (t) => {
@@ -83,14 +83,86 @@ test('delete requests', (t) => {
   });
 });
 
-// test('get requests return an object', (t) => {
-//   server.respondWith('GET', '/test', [
-//     200, { 'Content-Type': 'application/json' }, JSON.stringify({ foo: 1 }),
-//   ]);
-//   t.plan(1);
-//   ajaxApi.get('/test', () => {
-//     t.pass('Callback should have been called');
-//     t.end();
-//   });
-//   server.respond();
-// });
+test('applied response function', (t) => {
+  t.plan(2);
+  const uri = '/applied-on-response';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.pass();
+    next();
+  });
+
+  ajaxApi.get(uri, () => {
+    t.pass();
+  });
+});
+
+test('clear response functions', (t) => {
+  t.plan(1);
+
+  const uri = '/applied-on-response-clear';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.fail('Apply function should have been cleared');
+    next();
+  });
+
+  ajaxApi.clearResponseFunctions();
+  ajaxApi.get(uri, () => {
+    t.pass();
+  });
+});
+
+test('multiple applied response function', (t) => {
+  ajaxApi.clearResponseFunctions();
+
+  t.plan(3);
+  const uri = '/applied-on-response-multi';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.pass('fn 1 called');
+    next();
+  });
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.pass('fn 2 called');
+    next();
+  });
+
+  ajaxApi.get(uri, () => {
+    t.pass('callback called');
+  });
+});
+
+test.skip('multiple applied response function', (t) => {
+  t.plan(3);
+  const uri = '/applied-on-response-multi';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.pass('fn 1 called');
+    next();
+  });
+  ajaxApi.applyOnResponse((err, res, next) => {
+    t.pass('fn 2 called');
+    next();
+  });
+
+  ajaxApi.get(uri, () => {
+    t.pass('callback called');
+  });
+});
