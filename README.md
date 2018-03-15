@@ -48,7 +48,7 @@ If you need to interrupt responses, e.g. if you want to reauthenticate upon 401 
 
 ```js
 import ajax from 'nocms-ajax';
-ajax.applyOnResponse((err, res, next) => {
+ajax.applyOnResponse((req, err, res, next) => {
   if (err.status === 401) {
     window.location = '/login';
     next({ interrupt: true });
@@ -57,6 +57,12 @@ ajax.applyOnResponse((err, res, next) => {
   }
 });
 ```
+This response functions take an object `req`, currently including the url 
+of the request, `err`, including the error response object, `res`, the response
+ object and `next` a function for proceeding with the next response 
+ function or callback invokation.
+
+ Pass on `{ interrupt: true }` to prevent further handling of the response.
 
 #### clearResponseFunctions
 Removes all registered response functions.

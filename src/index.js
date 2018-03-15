@@ -1,7 +1,7 @@
 let responseFunctions = [];
 let hasResponseFunctions = false;
 
-const respond = (err, res, cb) => {
+const respond = (req, err, res, cb) => {
   let i = 0;
   const l = responseFunctions.length;
   let interrupted = false;
@@ -11,7 +11,7 @@ const respond = (err, res, cb) => {
     }
   };
   while (i < l) {
-    responseFunctions[i](err, res, next);
+    responseFunctions[i](req, err, res, next);
     i += 1;
   }
   if (!interrupted) {
@@ -77,7 +77,7 @@ const makeRequest = (url, method, data, opts, callback) => {
         error = xhr.statusText || 'Network error';
       }
       if (hasResponseFunctions) {
-        respond(error ? { error, status }  : null, response, cb);
+        respond({ url }, error ? { error, status }  : null, response, cb);
         return;
       }
       cb(error, response);
@@ -96,9 +96,6 @@ const api = {
   },
   put(url, data, options, cb) {
     makeRequest(url, 'PUT', data, options, cb);
-  },
-  delete(url, options, cb) {
-    makeRequest(url, 'DELETE', null, options, cb);
   },
   delete(url, options, cb) {
     makeRequest(url, 'DELETE', null, options, cb);

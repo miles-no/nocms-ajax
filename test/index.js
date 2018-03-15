@@ -91,7 +91,8 @@ test('applied response function', (t) => {
     status: 200,
   });
 
-  ajaxApi.applyOnResponse((err, res, next) => {
+  ajaxApi.applyOnResponse((req, err, res, next) => {
+    console.log('---------------------------------', req);
     t.pass();
     next();
   });
@@ -110,7 +111,7 @@ test('clear response functions', (t) => {
     status: 200,
   });
 
-  ajaxApi.applyOnResponse((err, res, next) => {
+  ajaxApi.applyOnResponse((req, err, res, next) => {
     t.fail('Apply function should have been cleared');
     next();
   });
@@ -131,11 +132,11 @@ test('multiple applied response functions', (t) => {
     status: 200,
   });
 
-  ajaxApi.applyOnResponse((err, res, next) => {
+  ajaxApi.applyOnResponse((req, err, res, next) => {
     t.pass('fn 1 called');
     next();
   });
-  ajaxApi.applyOnResponse((err, res, next) => {
+  ajaxApi.applyOnResponse((req, err, res, next) => {
     t.pass('fn 2 called');
     next();
   });
@@ -154,7 +155,7 @@ test('applied function interruption', (t) => {
     status: 200,
   });
 
-  ajaxApi.applyOnResponse((err, res, next) => {
+  ajaxApi.applyOnResponse((req, err, res, next) => {
     t.pass('applied function called');
     next({ interrupt: true });
   });
