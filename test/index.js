@@ -163,3 +163,21 @@ test('applied function interruption', (t) => {
     t.fail('interrupted callback called');
   });
 });
+
+test('skipResponseFunctions option', (t) => {
+  ajaxApi.clearResponseFunctions();
+  t.plan(1);
+  const uri = '/applied-on-response-interruption';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+
+  ajaxApi.applyOnResponse(() => {
+    t.fail('applied function called');
+  });
+
+  ajaxApi.get(uri, { skipResponseFunctions: true }, () => {
+    t.pass('regular callback called');
+  });
+});

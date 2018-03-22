@@ -76,8 +76,8 @@ const makeRequest = (url, method, data, opts, callback) => {
         status = xhr.status || -1;
         error = xhr.statusText || 'Network error';
       }
-      if (hasResponseFunctions) {
-        respond({ url }, error ? { error, status }  : null, response, cb);
+      if (!opts.skipResponseFunctions && hasResponseFunctions) {
+        respond({ url }, error ? { error, status } : null, response, cb);
         return;
       }
       cb(error, response);
