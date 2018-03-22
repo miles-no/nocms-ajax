@@ -59,7 +59,7 @@ const makeRequest = (url, method, data, opts, callback) => {
         error = xhr.statusText || 'Network error';
       }
       if (!opts.skipResponseFunctions && hasResponseFunctions) {
-        const respond = (req, err, res, cb) => {
+        const respond = (req, err, res) => {
           let i = 0;
           const l = responseFunctions.length;
           let interrupted = false;
@@ -81,7 +81,7 @@ const makeRequest = (url, method, data, opts, callback) => {
             makeRequest(url, method, data, opts, cb);
             return;
           }
-        
+
           if (!interrupted) {
             cb(err, res);
           }
