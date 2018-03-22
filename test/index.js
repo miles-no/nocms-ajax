@@ -167,7 +167,7 @@ test('applied function interruption', (t) => {
 test('skipResponseFunctions option', (t) => {
   ajaxApi.clearResponseFunctions();
   t.plan(1);
-  const uri = '/applied-on-response-interruption';
+  const uri = '/skip-response-function-option';
   mock.get(uri, {
     body: '{ "status": "ok" }',
     status: 200,
@@ -178,6 +178,26 @@ test('skipResponseFunctions option', (t) => {
   });
 
   ajaxApi.get(uri, { skipResponseFunctions: true }, () => {
+    t.pass('regular callback called');
+  });
+});
+
+test('response function continuing with replay flag', (t) => {
+  ajaxApi.clearResponseFunctions();
+  t.plan(3);
+  const uri = '/replay-original-request';
+  mock.get(uri, {
+    body: '{ "status": "ok" }',
+    status: 200,
+  });
+  let i = 0;
+  ajaxApi.applyOnResponse((req, err, res, next) => {
+    t.pass(`response function call no. ${i + 1}`);
+    i += 1;
+    next({ replay: i === 1 });
+  });
+
+  ajaxApi.get(uri, () => {
     t.pass('regular callback called');
   });
 });

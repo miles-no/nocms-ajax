@@ -1,24 +1,6 @@
 let responseFunctions = [];
 let hasResponseFunctions = false;
 
-const respond = (req, err, res, cb) => {
-  let i = 0;
-  const l = responseFunctions.length;
-  let interrupted = false;
-  const next = (result = {}) => {
-    if (result.interrupt) {
-      interrupted = true;
-    }
-  };
-  while (i < l) {
-    responseFunctions[i](req, err, res, next);
-    i += 1;
-  }
-  if (!interrupted) {
-    cb(err, res);
-  }
-};
-
 const makeRequest = (url, method, data, opts, callback) => {
   let options = opts;
   let cb = callback;
@@ -77,6 +59,34 @@ const makeRequest = (url, method, data, opts, callback) => {
         error = xhr.statusText || 'Network error';
       }
       if (!opts.skipResponseFunctions && hasResponseFunctions) {
+        const respond = (req, err, res, cb) => {
+          let i = 0;
+          const l = responseFunctions.length;
+          let interrupted = false;
+          let replay = false;
+          const next = (result = {}) => {
+            if (result.interrupt) {
+              interrupted = true;
+            }
+            if (result.replay) {
+              replay = true;
+            }
+          };
+          while (i < l) {
+            responseFunctions[i](req, err, res, next);
+            i += 1;
+          }
+
+          if (replay) {
+            makeRequest(url, method, data, opts, cb);
+            return;
+          }
+        
+          if (!interrupted) {
+            cb(err, res);
+          }
+        };
+
         respond({ url }, error ? { error, status } : null, response, cb);
         return;
       }

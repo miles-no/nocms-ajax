@@ -64,6 +64,8 @@ of the request, `err`, including the error response object, `res`, the response
 
  Pass on `{ interrupt: true }` to prevent further handling of the response.
 
+ Pass on `{ replay: true }` to invoke the original request once more. Callback is not called until next is called without any interruptions.
+
 #### clearResponseFunctions
 Removes all registered response functions.
 
