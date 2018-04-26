@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run prepare && npm run build-test && node bin/",
     "prepare": "babel ./src --out-dir ./lib --source-maps --presets env",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "nsp": "nsp check",
     "eslint": "eslint .",
     "build-test": "babel ./test --out-dir ./bin --presets env"
   },
@@ -17,11 +17,11 @@
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-preset-env": "^1.6.1",
-    "condition-circle": "1.5.0",
     "eslint": "^4.9.0",
     "eslint-config-webteam": "^2.0.0",
     "eslint-plugin-import": "^2.2.0",
-    "semantic-release": "^8.2.0",
+    "nsp": "^3.2.1",
+    "semantic-release": "^15.1.7",
     "tape": "^4.8.0",
     "xhr-mock": "^2.2.0"
   },
@@ -31,8 +31,5 @@
   ],
   "author": "",
   "license": "ISC",
-  "homepage": "https://github.com/miles-no/nocms-ajax",
-  "release": {
-    "verifyConditions": "condition-circle"
-  }
+  "homepage": "https://github.com/miles-no/nocms-ajax"
 }

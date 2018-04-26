@@ -1,6 +1,6 @@
 import test from 'tape';
 import mock from 'xhr-mock';
-import ajaxApi from '../lib';
+import ajaxApi from '../lib'; // eslint-disable-line
 
 mock.setup();
 
