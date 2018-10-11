@@ -13,6 +13,8 @@ const makeRequest = (url, method, data, opts, callback) => {
   const xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
 
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
   if (options.responseRequired) {
     xhr.setRequestHeader('Pragma', 'response-expected');
   }
