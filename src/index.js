@@ -92,7 +92,7 @@ const makeRequest = (url, method, data, opts, callback) => {
         respond({ url }, error ? { error, status } : null, response, cb);
         return;
       }
-      cb(error, response);
+      cb(error, response, xhr);
     }
   };
 
